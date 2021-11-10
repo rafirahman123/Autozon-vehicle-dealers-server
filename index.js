@@ -79,38 +79,46 @@ async function run() {
             res.json({ admin: isAdmin });
         });
 
-        //Add Tour Package API Post Api
-        // app.post('/addPackage', async (req, res) => {
-        //     const package = req.body;
-        //     console.log(package);
-        //     const result = await productsCollection.insertOne(package);
-        //     res.send(result);
-        // });
+        // GET my Orders
+        app.get('/myOrders/:email', async (req, res) => {
+            const result = await ordersCollection.find({
+                email: req.params.email,
+            }).toArray();
+            res.send(result);
+        });
 
-        //GET my Orders
-        // app.get('/myOrders/:email', async (req, res) => {
-        //     const result = await ordersCollection.find({
-        //         email: req.params.email,
-        //     }).toArray();
-        //     res.send(result);
-        // });
+        // DELETE an Personal Ordered Event
+        app.delete('/deleteOrder/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            console.log(id);
+            const result = await ordersCollection.deleteOne(query);
+            console.log("Deleting user with id ", result);
+            res.send(result);
+        });
 
-        //Get API for Manage All Order
-        // app.get('/manageAllOrder', async (req, res) => {
-        //     const result = await ordersCollection.find({}).toArray();
-        //     res.send(result);
-        //     console.log(result);
-        // });
+        //  Get API for Manage All Order
+        app.get('/manageAllOrder', async (req, res) => {
+            const result = await ordersCollection.find({}).toArray();
+            res.send(result);
+            console.log(result);
+        });
 
-        //DELETE an Personal Ordered Event
-        // app.delete('/orders/:id', async (req, res) => {
-        //     const id = req.params.id;
-        //     const query = { _id: ObjectId(id) };
-        //     // console.log(id);
-        //     const result = await ordersCollection.deleteOne(query);
-        //     console.log("Deleting user with id ", result);
-        //     res.send(result);
-        // });
+        // Add product API Post Api
+        app.post('/addProduct', async (req, res) => {
+            const product = req.body;
+            console.log(product);
+            const result = await productsCollection.insertOne(product);
+            res.send(result);
+        });
+
+        //DELETE Product
+        app.delete('/deleteProduct/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await productsCollection.deleteOne(query);
+            res.send(result);
+        });
 
 
     }
