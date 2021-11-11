@@ -21,6 +21,7 @@ async function run() {
         const productsCollection = database.collection('products');
         const ordersCollection = database.collection('orders');
         const usersCollection = database.collection('users');
+        const reviewsCollection = database.collection('review');
 
 
         // GET API
@@ -118,6 +119,19 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const result = await productsCollection.deleteOne(query);
             res.send(result);
+        });
+
+        //Add Review API
+        app.post('/addReview', async (req, res) => {
+            const review = req.body;
+            const result = await reviewsCollection.insertOne(review);
+            res.send(result);
+        });
+        //Get API for All Review 
+        app.get('/addReview', async (req, res) => {
+            const result = await reviewsCollection.find({}).toArray();
+            res.send(result);
+            console.log(result);
         });
 
 
